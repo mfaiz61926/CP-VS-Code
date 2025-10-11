@@ -60,3 +60,94 @@ int32_t main()
 }
 
     
+
+class STree{        
+private:
+
+    // [IMPORTANT]  CHANGE this function as required. 
+    int defaultVal=INT_MAX;
+    vector<int> tree,lazy;
+    int n;
+    
+    // [IMPORTANT] CHANGE this function as required.
+    void pushDown(int v,int tl, int tr){    // if your current node had some changes and it's there in the lazy vector i.e. 
+    // lazy[v] that means they weren't propagated to it's children .... .
+
+
+        // this block is responsible for adding the values to both the left and right children.
+        // the limits of these children are from tl to tmid & tmid+1,tl
+        int tmid=(tl+tr)>>1;
+        // the below is an example for adding a value to all nodes in the range 
+        // and utilising the tree for minimum in the range
+        tree[v*2]+=lazy[v];
+        tree[v*2+1]+=lazy[v];
+        lazy[v*2]+=lazy[v];         // take a note that you made some changes that haven't been passed on to your children . 
+        lazy[v*2+1]+=lazy[v];           
+
+        //once the updates are pushed to the children the parent can get rid of the update!
+        lazy[v]=0;  // my responsibility is completely I've told the changes to my children.. now it's their headache!!!!1  
+    }
+
+
+    // [IMPORTANT] CHANGE this function as required.
+    void combine(int v){  
+        tree[v]=min(tree[v<<1],tree[v<<1|1]);
+    }
+    
+    int query(int v, int tl, int tr, int l, int r) {      
+        if (tr <tl) return defaultVal;
+        if(tl>r || tr<l)    return defaultVal;       // invalid indices tried!
+        if (l <= tl && r >= tr) return tree[v];     // the current segment completely belongs to the answer
+        int tm = (tl + tr)>>1;
+        pushDown(v,tl,tr);
+        combine(v);
+
+        // [IMPORTANT] CHANGE this code below as required.
+        return min(query(v<<1, tl, tm, l, r)  , query(v<<1|1, tm+1, tr, l, r));
+    }
+    void buildTree(vector<int>& a,int tl, int tr,int v=1){  // builds up the tree starting from the root.
+        if(tl>tr) return;
+        if(tl==tr){
+            tree[v]=a[tl];
+            return;
+        }
+        int mid=(tl+tr)>>1;
+        buildTree(a,tl,mid,v<<1);
+        buildTree(a,mid+1,tr,v<<1|1);
+        combine(v);
+    }
+    void update(int l,int r,int val,int v,int tl,int tr){
+        if(tl>tr) return;
+        if(tl>r || tr<l)  return;     //not in the current range
+        
+        if(tl>=l && tr<=r){        // [IMPORTANT] CHANGE the code below as required.
+        // if the subtree is completely inside the range then update the current node ... 
+        // also make sure your children can get this info in the future if and when they need it ...
+            tree[v]+=val;   // update the value! 
+            lazy[v]+=val;   // this is just for reference for the children and not for the current node as your current node is already updated!   
+            return;         // return;
+        }
+        pushDown(v,tl,tr);          // notifying my children of the changes (if any! )
+        int tmid=(tl+tr)>>1;
+        update(l,r,val,v<<1,tl,tmid);
+        update(l,r,val,v<<1|1,tmid+1,tr);
+        combine(v);
+    }
+public:
+    STree(vector<int>& vec){
+        n=vec.size();
+        tree.assign(n<<2,defaultVal);       // all nodes initially have default values 
+        lazy.assign(n<<2,0);
+        buildTree(vec,0,n-1);
+    }
+
+    int query(int l,int r){             // query in the range l to r.
+        return query(1,0,n-1,l,r);
+    }
+    void update(int idx,int val){       // this is overloaded for point updates
+        update(idx,idx,val,1,0,n-1);
+    }
+    void update(int l,int r,int val){     
+        update(l,r,val,1,0,n-1);
+    }
+};
