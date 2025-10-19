@@ -74,36 +74,21 @@ void __f (const char* names, Arg1&& arg1, Args&&... args)
 }
 
 const int N = 200005;
-bool isPal(const string &s) {
-    for (int i = 0, j = (int)s.size() - 1; i < j; i++, j--)
-        if (s[i] != s[j]) return false;
-    return true;
-}
 
-bool nonDec(const string &s) {
-    for (int i = 1; i < (int)s.size(); i++)
-        if (s[i] < s[i - 1]) return false;
-    return true;
-}
 void solve() {
-    int n; string s;
-    cin >> n >> s;
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
 
-    for (int mask = 0; mask < (1 << n); mask++) {
-        string p, x;
-        vector<int> pos;
-        for (int i = 0; i < n; i++) {
-            if (mask >> i & 1) p += s[i], pos.pb(i + 1);
-            else x += s[i];
-        }
-        if (nonDec(p) && isPal(x)) {
-            cout << (int)pos.size() << "\n";
-            for (int i = 0; i < (int)pos.size(); i++)
-                cout << pos[i] << (i + 1 == (int)pos.size() ? '\n' : ' ');
-            return;
-        }
+    vi pos;
+
+    for(int i = 0; i < n; i++){
+        if(s[i] == '0') pos.push_back(i + 1);
     }
-    cout << "-1\n";
+    cout << pos.size() << endl;
+    for(int i : pos)cout << i << " ";
+    cout << endl;
 }
 
 int32_t main()
