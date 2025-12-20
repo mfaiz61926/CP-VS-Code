@@ -14,3 +14,24 @@ public:
         return f(n);
     }
 };
+
+
+
+//2nd approach
+class Solution {
+    long long solve(long long n, int op)
+    {
+        if (n == 1)
+            return 1;
+        if (op == 0)
+            return solve((n + 1) / 2, 1) * 2 - 1;
+        if (n % 2)
+            return solve((n + 1) / 2, 0) * 2 - 1;
+        return solve(n / 2, 0) * 2;
+    }
+public:
+    long long lastInteger(long long n)
+    {
+        return solve(n, 0);
+    }
+};
