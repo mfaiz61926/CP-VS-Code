@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
-public:
+public: // c
     string maximumXor(string s, string t) {
         string ans = "";
         unordered_map<char, int>mp;
