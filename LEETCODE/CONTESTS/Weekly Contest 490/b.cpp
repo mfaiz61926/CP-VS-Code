@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
-public:
+public://b
     int fact(char ch){
         int n = ch - '0';
         int ans = 1;
