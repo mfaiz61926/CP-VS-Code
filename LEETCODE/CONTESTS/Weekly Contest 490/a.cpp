@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
-public:
+public: // prob a
     int scoreDifference(vector<int>& nums) {
         int tot_a = 0, tot_b = 0;
         int a = 1, b = 0;
