@@ -78,44 +78,36 @@ const int N = 200005;
 void solve() {
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-    }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
+    vi v(n + 1);
+    fb_3(i,1,n) cin >> v[i];
+
+    vector<int> vis(n + 1, 0);
+
+    fb_3(i,1,n) {
+        if (vis[i]) continue;
+
+        vi cur, target;
+        int x = i;
+
+        while (x <= n) {
+            vis[x] = 1;
+            cur.pb(v[x]);
+            target.pb(x);
+            x *= 2;
+        }
+
+        srt_3(cur);
+        srt_3(target);
+
+        if (cur != target) {
+            cout << "NO" << endl;
+            return;
         }
     }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
+
+    cout << "YES" << endl;
 }
+
 
 int32_t main()
 {

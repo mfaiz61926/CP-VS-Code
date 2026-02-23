@@ -78,43 +78,13 @@ const int N = 200005;
 void solve() {
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+    vi v(n);
+    cin >> v;
+    int a = 1;
+    for(auto&i : v){
+        a *= i;
     }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
-        }
-    }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
+    cout << (a % 67 == 0? "YES" : "NO") <<endl;
 }
 
 int32_t main()

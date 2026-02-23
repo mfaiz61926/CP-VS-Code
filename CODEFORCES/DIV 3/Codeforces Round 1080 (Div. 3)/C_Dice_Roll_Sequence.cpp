@@ -78,44 +78,39 @@ const int N = 200005;
 void solve() {
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+    vi a(n);
+    cin >> a;
+
+    const int INF = 1e18;
+    vector<vi> dp(n, vi(7, INF));
+
+    for (int x = 1; x <= 6; x++) {
+        dp[0][x] = (a[0] == x ? 0 : 1);
     }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
+
+    auto adj = [&](int x, int y) {
+        if (x == y) return false;
+        if (x + y == 7) return false;
+        return true;
+    };
+
+    for (int i = 1; i < n; i++) {
+        for (int x = 1; x <= 6; x++) {
+            for (int y = 1; y <= 6; y++) {
+                if (adj(x, y)) {
+                    dp[i][x] = min(dp[i][x],
+                                   dp[i-1][y] + (a[i] == x ? 0 : 1));
+                }
+            }
         }
     }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
+
+    int ans = INF;
+    for (int x = 1; x <= 6; x++) ans = min(ans, dp[n-1][x]);
+
+    cout << ans << endl;
 }
+
 
 int32_t main()
 {

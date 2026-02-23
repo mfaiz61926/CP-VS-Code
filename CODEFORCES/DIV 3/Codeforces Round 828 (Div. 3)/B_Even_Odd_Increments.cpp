@@ -76,45 +76,39 @@ void __f (const char* names, Arg1&& arg1, Args&&... args)
 const int N = 200005;
 
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+    int n, q;
+    cin >> n >> q;
+    vi v(n);
+    cin >> v;
+
+    int even = 0;
+    int odd = 0;
+
+    for(auto & i : v){
+        if(i % 2 == 0) even++;
+        else odd++;
     }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
+
+    int ans = accumulate(all(v), 0LL);
+    for(int i = 0; i < q; i++){
+        int type, x;
+        cin >> type >> x;
+
+        if(type == 0){
+            ans += (even * x);
+            if(x % 2 == 1){
+                odd += even;
+                even = 0;
+            }
+        }else{
+            ans += (odd * x);
+            if(x % 2 == 1){
+                even+= odd;
+                odd = 0;
+            }
         }
+        cout << ans << endl;
     }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
 }
 
 int32_t main()

@@ -74,47 +74,43 @@ void __f (const char* names, Arg1&& arg1, Args&&... args)
 }
 
 const int N = 200005;
+int n;
+vector<int> L, R;
+vector<long long> f;
 
+/*
+ f[v] = total time for Bob to start at v
+        and finally move to v's parent
+*/
+void dfs(int v) {
+    if (L[v] == 0 && R[v] == 0) {
+        // leaf
+        f[v] = 1;
+        return;
+    }
+
+    dfs(L[v]);
+    dfs(R[v]);
+
+    // f[v] = f[left] + f[right] + 5
+    f[v] = (f[L[v]] + f[R[v]] + 3) % MOD;
+}
 void solve() {
-    int n;
     cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+
+    L.assign(n + 1, 0);
+    R.assign(n + 1, 0);
+    f.assign(n + 1, 0);
+
+    for (int i = 1; i <= n; i++) {
+        cin >> L[i] >> R[i];
     }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
-        }
+
+    dfs(0);
+
+    for (int i = 1; i <= n; i++) {
+        cout << f[i] % MOD << (i == n ? '\n' : ' ');
     }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
 }
 
 int32_t main()

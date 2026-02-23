@@ -78,43 +78,28 @@ const int N = 200005;
 void solve() {
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-    }
-    vector<int> b = a;
-    sort(b.rbegin(), b.rend());
-    int left=0, right=n-1;
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] != b[i])
-        {
-            left=i;
-            break;
+    vi v(n);
+    cin >> v;
+    string s;
+    cin >> s;
+
+    map<int,char>mp;
+
+    for(int i = 0; i < n; i++){
+        int x = v[i];
+        char ch = s[i];
+
+        if(mp.find(x) == mp.end()){
+            mp[x] = ch;
+        }
+        else{
+            if(mp[x] != ch){
+                cout << "NO" << endl;
+                return;
+            }
         }
     }
-    for (int i = n-1; i >=0; i--)
-    {
-        if (a[i]==b[left])
-        {
-            right=i;
-            break;
-        }
-    }
-    for (int i = 0; i < left; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right; i >= left; i--)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = right+1; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << "\n";
+    cout << "YES" << endl;
 }
 
 int32_t main()
