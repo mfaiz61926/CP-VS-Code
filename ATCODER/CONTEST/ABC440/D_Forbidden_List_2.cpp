@@ -145,38 +145,43 @@ const int d8r[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8c[8]={0, 1, 1, 1, 0, -1, -1, -1}
 const int N = 200005;
 
 void m_conq() {
-    int n, w;
-    cin >> n >> w;
+        int n, q;
+        cin >> n >> q;
+        vi a(n);
+        cin >> a;
+        // precomputations -> as order of array(input) does not effect the ans, so sort it 
+        sort(all(a));
 
-    vi c(n);
-    for(int i = 0; i < n; i++) cin >> c[i];
+        //here we can perform nlogn on a;
+        //there are n integers given
+        // yth smallest value among integers >= xj samllest value  ** that are not in the
+        while(q--){  // 3 * 10 ^ 5 // only logn operation is allowed that is safe.
+            int x, y;
+            cin >> x >> y;
+            //do something like binary search becoz arry is sorted
+            //find val that is greater>= x using BS
+            int idx = lower_bound(all(a), x) - a.begin();
 
-    int m = 2*w;
-
-    vector<int> cost(m,0);
-
-    for(int i = 0; i < n; i++){
-        int pos = (i+1) % m;
-        cost[pos] += c[i];
-    }
-
-    vector<int> a = cost;
-    a.insert(a.end(), cost.begin(), cost.end());
-
-    int cur = 0;
-
-    for(int i = 0; i < w; i++)
-        cur += a[i];
-
-    int ans = cur;
-
-    for(int i = w; i < 2*m; i++){
-        cur += a[i];
-        cur -= a[i-w];
-        ans = min(ans, cur);
-    }
-
-    cout << ans << endl;
+            int low = 0; int high = n - 1;
+            int ti = n;
+            while(low <= high){
+                int mid = low + (high - low) / 2;
+    //total numbers in the range -> (a[mid] - x + 1)
+    // numbers that are present in array of the same above rang -> (mid - idx + 1)
+    //the total good numbers we get from here-> ((a[mid] - x + 1) - (mid - idx + 1))
+                if(((a[mid] - x + 1) - (mid - idx + 1)) >= y){
+                    ti = mid;
+                    high = mid - 1;
+                }
+                else{
+                    low = mid + 1;
+                }
+            }
+            // if there is no element in the array then standart and is -> x + (n - 1)
+            // if there are some elements in array just add them;
+            int ans = x + (y - 1) + (ti - idx);
+            cout << ans << endl;
+        }
 }
 
 int32_t main()
@@ -191,7 +196,7 @@ int32_t main()
     // clock_t z = clock();
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     fr1(i, t){
         // cout << "Case #" <<  i+1 << ": ";
         m_conq();
