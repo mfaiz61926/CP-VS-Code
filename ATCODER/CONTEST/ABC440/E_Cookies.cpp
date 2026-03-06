@@ -144,11 +144,54 @@ const int d4r[4]={-1, 0, 1, 0}, d4c[4]={0, 1, 0, -1};
 const int d8r[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8c[8]={0, 1, 1, 1, 0, -1, -1, -1};
 const int N = 200005;
 
+struct state{
+    int sum;
+    vi c;
+};
+
+struct cmp {
+    bool operator()(const state&a, const state&b){
+        return a.sum < b.sum;
+    }
+};
+
 void m_conq() {
         int n, k, x;
         cin >> n >> k >> x;
         vi a(n); 
         cin >> a;
+
+        sort(a.rbegin(), a.rend());
+        priority_queue<state, vector<state>, cmp> pq;
+        set<vector<int>> vis;
+
+        vector<int>start(n, 0);
+        start[0] = k;
+
+        int startSum = k * a[0];
+        pq.push({startSum, start});
+        vis.insert(start);
+
+        while(x--){
+            auto cur = pq.top();
+            pq.pop();
+
+            cout << cur.sum << endl;
+
+            auto c = cur.c;
+            for(int i = 0; i < n - 1; i++){
+                    if(c[i] == 0) continue;
+                    vector<int>nxt = c;
+                    nxt[i]--;
+                    nxt[i + 1]++;
+
+                    if(vis.count(nxt)) continue;
+                    vis.insert(nxt);
+
+                    int newSum = cur.sum - a[i] + a[i + 1];
+                    pq.push({newSum, nxt});
+            }
+        }
 }
 
 int32_t main()
@@ -163,7 +206,7 @@ int32_t main()
     // clock_t z = clock();
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     fr1(i, t){
         // cout << "Case #" <<  i+1 << ": ";
         m_conq();
