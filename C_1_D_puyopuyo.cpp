@@ -170,33 +170,33 @@ void m_conq() { // exact correct approack
 
     cout << st.size() << endl;
 }
-void m_conq() {
-        int n; cin >> n;
-        vi v(n);
-        cin >> v;
+// void m_conq() {  // my approack
+//         int n; cin >> n;
+//         vi v(n);
+//         cin >> v;
 
-        vi st;
-        for(auto & x : v){
-            st.push_back(x);
-            if(st.size()>= 4){
-                int a = st.back(); st.pop_back();
-                int b = st.back(); st.pop_back();
-                int c = st.back(); st.pop_back();
-                int d = st.back(); st.pop_back();
-                bool ok = false;
-                if(a == b && b == c && c == d && d == a) ok = true;
-                if(!ok){
-                    st.push_back(d);
-                    st.push_back(c);
-                    st.push_back(b);
-                    st.push_back(a);
-                }
-            }
-        }
+//         vi st;
+//         for(auto & x : v){
+//             st.push_back(x);
+//             if(st.size()>= 4){
+//                 int a = st.back(); st.pop_back();
+//                 int b = st.back(); st.pop_back();
+//                 int c = st.back(); st.pop_back();
+//                 int d = st.back(); st.pop_back();
+//                 bool ok = false;
+//                 if(a == b && b == c && c == d && d == a) ok = true;
+//                 if(!ok){
+//                     st.push_back(d);
+//                     st.push_back(c);
+//                     st.push_back(b);
+//                     st.push_back(a);
+//                 }
+//             }
+//         }
 
-        cout << st.size() << endl;
+//         cout << st.size() << endl;
 
-}
+// }
 
 int32_t main()
 {
