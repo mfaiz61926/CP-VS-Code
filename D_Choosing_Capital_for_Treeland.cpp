@@ -142,37 +142,54 @@ struct fenwick {
 
 const int d4r[4]={-1, 0, 1, 0}, d4c[4]={0, 1, 0, -1};
 const int d8r[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8c[8]={0, 1, 1, 1, 0, -1, -1, -1};
-const int N = 200005;
-// i : j : k = 7 : 5 : 3
-// j = 5t;   t = j/5
-// i = 7t, k = 32t
+const int N = 2e5 + 20;
+int n;
+vector<pii> g[N];
+int dp[N];
+
+void dfs1(int v, int par = -1){
+    for(pii p : g[v]){
+        int u = p.first, w = p.second;
+        if(u == par) continue;
+        dp[0] += w;
+        dfs1(u, v);
+    }
+}
+
+void dfs2(int v, int par = -1){
+    // I know dp[v], I want to find dp[u] for each u child of v
+    for(pii p : g[v]){
+        int u = p.first, w = p.second;
+        if(u == par) continue;
+        dp[u] = dp[v] + (!w ? 1 : -1);
+        dfs2(u, v);
+    }
+}
 void m_conq() {
-        int n;
-        cin >> n;
-        vi a(n);
-        cin >> a;
+    cin >> n;
+    for(int i = 0; i < n - 1; i++){
+        int u, v;
+        cin >> u >> v;
+        u--, v--;
+        g[u].push_back({v, 0}); // direction is correct;
+        g[v].push_back({u, 1}); //direction is wrong
+    }        
 
-        unordered_map<int,int>L, R;
-        //fill R for all ele first;
-        for(auto & i : a) R[i]++;
+    dfs1(0);
+    dfs2(0);
 
-        int cnt = 0;
-        for(int j = 0; j < n; j++){
-            int v = a[j];
-            R[v]--;
-            
-            if(v % 5 == 0){
-                int t = v / 5;
-                int x = 7 * t;
-                int y = 3 * t;
-                cnt += L[x] * L[y];
-                cnt += R[x] * R[y];
-            }
-
-            L[v]++;
+    vector<int> vec;
+    for(int i = 0; i < n; i++){
+        if(vec.empty() || dp[i] < dp[vec[0]]){
+            vec.clear();
+            vec.push_back(i);
         }
+        else if(dp[i] == dp[vec[0]]) vec.push_back(i);
+    }
 
-        cout << cnt << endl;
+    cout << dp[vec[0]] << endl;
+    for(int x : vec) cout << x + 1 << ' ';
+    cout << endl;
 }
 
 int32_t main()
@@ -197,4 +214,3 @@ int32_t main()
 
     return 0;
 }
-
