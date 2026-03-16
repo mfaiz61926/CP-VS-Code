@@ -145,7 +145,7 @@ const int d8r[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8c[8]={0, 1, 1, 1, 0, -1, -1, -1}
 const int N = 200005;
 
 void m_conq() {
-    int    n;
+    int n; //inp
     cin >> n;
     vector<int> c(n*n+1);
     for(int i=0;i<n*n;i++){
