@@ -146,7 +146,7 @@ const int N = 200005;
 
 void m_conq() {
         int n;
-        cin >> n;  // input
+        cin >> n;  // input cin 
         vi v(n);
         cin >> v;
 
