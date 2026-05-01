@@ -144,7 +144,7 @@ const int d4r[4]={-1, 0, 1, 0}, d4c[4]={0, 1, 0, -1};
 const int d8r[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8c[8]={0, 1, 1, 1, 0, -1, -1, -1};
 const int N = 200005;
 
-void m_conq() {
+void m_conq() { // this is the
         int n;
         cin >> n;
         vi v(n);
